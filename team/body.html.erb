@@ -32,12 +32,29 @@ body {
   font-size: 12px;
   line-height: 1.5em;
 }
+
+.team-bio {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.team-bio .emoji {
+  height: 14px;
+}
 </style>
 
 <h1>The Karrot Team</h1>
 
+<% karrot_team = Group.where(name: 'KarrotTeam').first %>
+
+<div class="team-bio">
+  <%= karrot_team.bio_cooked.html_safe %>
+</div>
+
 <div class="team-grid">
-  <% Group.where(name: 'KarrotTeam').first.users.order("random() ASC").each do |user| %>
+  <% karrot_team.users.order("random() ASC").each do |user| %>
     <div class="team-member">
       <%= user_profile(user, avatar_size: 120, add_bio: true) %>
     </div>
