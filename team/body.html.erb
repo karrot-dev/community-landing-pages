@@ -34,7 +34,7 @@ body {
 }
 </style>
 
-<h1>Team page</h1>
+<h1>The Karrot Team</h1>
 
 <div class="team-grid">
   <% Group.where(name: 'KarrotTeam').first.users.order("random() ASC").each do |user| %>
