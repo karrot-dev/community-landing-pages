@@ -1,1 +1,45 @@
+<style>
+h1 {
+  text-align: center;
+}
+
+body {
+  font-family: Arial;
+}
+
+.team-grid {
+  display: grid;
+  grid-gap: 30px;
+  grid-template-columns: repeat(auto-fit, 300px);
+  justify-items: center;
+  justify-content: center;
+}
+
+.team-member {
+  width: 260px;
+  box-shadow: 3px 3px 10px -2px #e9e9e9;;
+  background-color: white;
+  padding: 20px;
+  border-radius: 2px;
+}
+
+.team-member * {
+  color: #222;
+  text-decoration: none;
+}
+
+.team-member .user-bio {
+  font-size: 12px;
+  line-height: 1.5em;
+}
+</style>
+
 <h1>Team page</h1>
+
+<div class="team-grid">
+  <% Group.where(name: 'KarrotTeam').first.users.order("random() ASC").each do |user| %>
+    <div class="team-member">
+      <%= user_profile(user, avatar_size: 120, add_bio: true) %>
+    </div>
+  <% end %>
+</div>
