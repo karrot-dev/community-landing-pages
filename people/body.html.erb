@@ -47,14 +47,14 @@ body {
 
 <h1>People</h1>
 
-<% karrot_team = Group.where(name: 'KarrotTeam').first %>
+<% karrot_contributors = Group.where(name: 'KarrotContributors').first %>
 
 <div class="team-bio">
-  <%= karrot_team.bio_cooked.html_safe %>
+  <%= karrot_contributors.bio_cooked.html_safe %>
 </div>
 
 <div class="team-grid">
-  <% karrot_team.users.order("random() ASC").each do |user| %>
+  <% karrot_contributors.users.order("random() ASC").each do |user| %>
     <div class="team-member">
       <%= user_profile(user, avatar_size: 120, add_bio: true) %>
     </div>
