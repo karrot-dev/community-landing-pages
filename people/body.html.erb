@@ -1,62 +1,114 @@
 <style>
+
 h1 {
   text-align: center;
+}
+
+h2 {
+    text-align: center;
 }
 
 body {
   font-family: Arial;
 }
 
-.team-grid {
+.people-section {
+  margin: 60px 0;
+}
+
+.members {
   display: grid;
   grid-gap: 30px;
-  grid-template-columns: repeat(auto-fit, 300px);
+  grid-template-columns: 300px 300px;
   justify-items: center;
   justify-content: center;
 }
 
-.team-member {
+.member {
   width: 260px;
   box-shadow: 3px 3px 10px -2px #e9e9e9;;
   background-color: white;
   padding: 20px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 
-.team-member * {
+.member * {
   color: #222;
   text-decoration: none;
 }
 
-.team-member .user-bio {
+.member .user-bio {
   font-size: 12px;
   line-height: 1.5em;
 }
 
-.team-bio {
-  max-width: 300px;
+.description {
   margin: 0 auto;
   text-align: center;
   margin-bottom: 30px;
 }
 
-.team-bio .emoji {
+.description .emoji {
   height: 14px;
+  width: 14px;
 }
+
+.member p {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.member p a {
+  text-decoration: underline;
+}
+
+.member p .emoji {
+  height: 12px;
+  width: 12px;
+}
+
 </style>
 
-<h1>People</h1>
+<h1>👯 People</h1>
 
-<% karrot_contributors = Group.where(name: 'KarrotContributors').first %>
+<% team_group = Group.find_by_name('KarrotTeam') %>
+<% contributors_group = Group.find_by_name('KarrotContributors') %>
 
-<div class="team-bio">
-  <%= karrot_contributors.bio_cooked.html_safe %>
+<% team_members = team_group.users.order("random() ASC") %>
+<% team_usernames = team_members.collect { |user| user.username } %>
+
+<% other_contributors = contributors_group.users.order("random() ASC").select { |user| !team_usernames.include? user.username } %>
+
+<div class="people-section">
+    <h2><%= team_group.full_name %></h2>
+
+    <div class="description">
+        <%= team_group.bio_cooked.html_safe %>
+    </div>
+
+    <div class="members">
+    <% team_members.each do |user| %>
+        <div class="member">
+            <%= user_profile(user, avatar_size: 120, bottom_extra: user.user_profile.bio_cooked) %>
+        </div>
+    <% end %>
+    </div>
 </div>
 
-<div class="team-grid">
-  <% karrot_contributors.users.order("random() ASC").each do |user| %>
-    <div class="team-member">
-      <%= user_profile(user, avatar_size: 120, add_bio: true) %>
+<div class="people-section">
+
+    <h2><%= contributors_group.full_name %></h2>
+
+    <div class="description">
+    <%= contributors_group.bio_cooked.html_safe %>
     </div>
-  <% end %>
+
+    <div class="members">
+    <% other_contributors.each do |user| %>
+        <div class="member">
+            <%= user_profile(user, avatar_size: 120, bottom_extra: user.user_profile.bio_cooked) %>
+        </div>
+    <% end %>
+    </div>
+
 </div>
